@@ -1,0 +1,4 @@
+[submodule "src/iptables"]
+	path = src/iptables
+	url = https://android.googlesource.com/platform/external/iptables
+	branch = master
