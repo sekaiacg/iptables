@@ -39,6 +39,21 @@ set(static_link_lib
 	-Wl,--end-group
 )
 
+set(iptables_symlink
+	"iptables-save"
+	"iptables-restore"
+	"ip6tables-save"
+	"ip6tables-restore"
+)
+
+foreach(symlink ${iptables_symlink})
+	add_custom_target(${symlink} ALL
+		${CMAKE_COMMAND} -E create_symlink ${TARGET_iptables} ${symlink}
+		DEPENDS ${TARGET_iptables}
+		COMMENT "Creating ${symlink} symlink"
+	)
+endforeach(symlink)
+
 add_executable(${TARGET_iptables} ${iptables_srcs})
 target_include_directories(${TARGET_iptables} PRIVATE
 	${iptables_headers}
@@ -49,4 +64,3 @@ if (CMAKE_SYSTEM_NAME MATCHES "Linux")
 	target_link_options(${TARGET_iptables} PRIVATE "-Wl,--no-fatal-warnings")
 endif()
 target_compile_options(${TARGET_iptables} PRIVATE ${TARGET_CFLAGS})
-
